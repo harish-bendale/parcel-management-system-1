@@ -1,4 +1,4 @@
-package com.parcel_managemant_system.app;
+package com.parcel_management_system.app;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
