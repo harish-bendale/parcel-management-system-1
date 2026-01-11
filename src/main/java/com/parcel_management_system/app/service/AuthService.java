@@ -59,6 +59,7 @@ public class AuthService {
         user.setUsername(authUtil.generateUserCode(ERole.CUSTOMER));
         user.setEmail(dto.getEmail());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setName(dto.getName());
 
         User savedUser = userRepository.save(user);
 
@@ -83,6 +84,7 @@ public class AuthService {
 
         return new UserDetailsResponseDto(
                 savedUser.getId(),
+                savedUser.getName(),
                 savedUser.getUsername(),
                 savedUser.getRole(),
                 savedUser.getEmail());
@@ -103,6 +105,7 @@ public class AuthService {
             String token = jwtUtil.generateToken(user.getUsername(), user.getRole().name(), user.getEmail());
             return new AuthResponseDto(token, new UserDetailsResponseDto(
                     user.getId(),
+                    user.getName(),
                     user.getUsername(),
                     user.getRole(),
                     user.getEmail()));
