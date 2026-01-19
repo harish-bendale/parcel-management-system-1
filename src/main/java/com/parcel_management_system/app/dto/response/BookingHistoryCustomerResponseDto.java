@@ -17,4 +17,5 @@ public class BookingHistoryCustomerResponseDto {
     private String deliveryAddress;
     private Double amount;
     private EBookingStatus bookingStatus;
+    private Boolean isPaid;
 }

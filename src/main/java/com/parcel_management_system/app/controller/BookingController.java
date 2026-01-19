@@ -9,6 +9,7 @@ import com.parcel_management_system.app.dto.request.BookingHistoryOfficerRequest
 import com.parcel_management_system.app.dto.request.BookingParcelRequestDto;
 import com.parcel_management_system.app.dto.response.BookingHistoryCustomerResponseDto;
 import com.parcel_management_system.app.dto.response.BookingHistoryOfficerResponseDto;
+import com.parcel_management_system.app.dto.response.InvoiceDetailsResponseDto;
 import com.parcel_management_system.app.enums.EBookingStatus;
 import com.parcel_management_system.app.security.JwtUtil;
 import com.parcel_management_system.app.service.BookingService;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -74,11 +76,16 @@ public class BookingController {
         Long customerId = jwtUtil.extractId(token);
 
         System.out.println("customerId" + customerId);
-        
 
         Page<BookingHistoryCustomerResponseDto> response = bookingService.getBookingHistoryForCustomer(dto, customerId);
 
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/invoice/{bookingId}")
+    public ResponseEntity<InvoiceDetailsResponseDto> getInvoiceDetails(@PathVariable Long bookingId) {
+        InvoiceDetailsResponseDto response = bookingService.getInvoiceDetails(bookingId);
+
+        return ResponseEntity.ok(response);
+    }
 }

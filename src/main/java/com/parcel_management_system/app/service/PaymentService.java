@@ -59,9 +59,10 @@ public class PaymentService {
         payment.setCardHolderName(dto.getCardHolderName());
         payment.setIsRefund(false);
         payment.setPaidAt(LocalDateTime.now());
-        payment.setExpiryDate(dto.getExpirtDate());
+        payment.setExpiryDate(dto.getExpiryDate());
         Payment savedPayment = paymentRepository.save(payment);
 
+        booking.setIsPaid(true);
         booking.setPayment(savedPayment);
         bookingRepository.save(booking);
     }

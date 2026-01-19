@@ -31,5 +31,5 @@ public class ParcelPaymentRequestDto {
     private String cardHolderName;
 
     @NotNull(message = "Expiry date is required")
-    private LocalDate expirtDate;
+    private LocalDate expiryDate;
 }
