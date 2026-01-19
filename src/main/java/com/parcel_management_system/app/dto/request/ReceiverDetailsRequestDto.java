@@ -42,7 +42,6 @@ public class ReceiverDetailsRequestDto {
     @Size(max = 255, message = "Address line 2 must not exceed 255 characters")
     private String addressLine2;
 
-    @NotBlank(message = "Landmark is required")
     @Size(max = 100, message = "Landmark must not exceed 100 characters")
     private String landmark;
 

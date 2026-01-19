@@ -30,7 +30,7 @@ public class PaymentService {
 
     @Transactional
     public void paymentForParcel(ParcelPaymentRequestDto dto) {
-        Booking booking = bookingRepository.findById(dto.getBookingId())
+        Booking booking = bookingRepository.findByTrakingId(dto.getBookingId())
                 .orElseThrow(() -> new ResourceNotFound("Booking"));
 
         String transactionId = paymentUtil.generateTransactionId();
@@ -66,6 +66,5 @@ public class PaymentService {
         booking.setPayment(savedPayment);
         bookingRepository.save(booking);
     }
-
 
 }

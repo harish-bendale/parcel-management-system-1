@@ -56,7 +56,8 @@ public class BookingService {
         private TrakingRepository trakingRepository;
 
         @Transactional
-        public void createNewBookingByCustomer(BookingParcelRequestDto dto) {
+        public com.parcel_management_system.app.dto.response.BookingResponseDto createNewBookingByCustomer(
+                        BookingParcelRequestDto dto) {
                 ReceiverDetailsRequestDto receiverDetailsDto = dto.getReceiverDetails();
                 ParcelRequestDto parcelDto = dto.getParcel();
 
@@ -74,7 +75,8 @@ public class BookingService {
                 receiverDetails.setHouseNo(receiverDetailsDto.getHouseNo());
                 receiverDetails.setAddressLine1(receiverDetailsDto.getAddressLine1());
                 receiverDetails.setAddressLine2(receiverDetailsDto.getAddressLine2());
-                receiverDetails.setLandmark(receiverDetailsDto.getLandmark());
+                receiverDetails.setLandmark(
+                                receiverDetailsDto.getLandmark() != null ? receiverDetailsDto.getLandmark() : "");
                 receiverDetails.setCity(receiverDetailsDto.getCity());
                 receiverDetails.setState(receiverDetailsDto.getState());
                 receiverDetails.setPinCode(receiverDetailsDto.getPinCode());
@@ -115,7 +117,9 @@ public class BookingService {
                 traking.setDescription(null);
                 trakingRepository.save(traking);
 
-                return;
+                return new com.parcel_management_system.app.dto.response.BookingResponseDto(
+                                savedBooking.getTrakingId(),
+                                savedBooking.getId());
         }
 
         public Page<BookingHistoryOfficerResponseDto> getBookingHistoryForOfficer(BookingHistoryOfficerRequestDto dto) {

@@ -28,98 +28,117 @@ import com.parcel_management_system.app.repository.TrakingRepository;
 
 @Service
 public class TrakingService {
-    @Autowired
-    private BookingRepository bookingRepository;
+        @Autowired
+        private BookingRepository bookingRepository;
 
-    @Autowired
-    private TrakingRepository trakingRepository;
+        @Autowired
+        private TrakingRepository trakingRepository;
 
-    @Autowired
-    private CustomerReopository customerReopository;
+        @Autowired
+        private CustomerReopository customerReopository;
 
-    public TrakingDetailsResponseDto getTrakingDetails(String bookingId) {
-        Booking booking = bookingRepository.findByTrakingId(bookingId)
-                .orElseThrow(() -> new ResourceNotFound("Booking"));
+        public TrakingDetailsResponseDto getTrakingDetails(String bookingId) {
+                Booking booking = bookingRepository.findByTrakingId(bookingId)
+                                .orElseThrow(() -> new ResourceNotFound("Booking"));
 
-        Parcel parcelDetails = booking.getParcel();
-        ReceiverDetails receiverDetails = booking.getReceiverDetails();
-        User senderDetails = booking.getUser();
-        Payment paymentDetails = booking.getPayment();
-        List<Traking> trakingHistory = trakingRepository.findByBookingId(booking.getId());
+                Parcel parcelDetails = booking.getParcel();
+                ReceiverDetails receiverDetails = booking.getReceiverDetails();
+                User senderDetails = booking.getUser();
+                Payment paymentDetails = booking.getPayment();
+                List<Traking> trakingHistory = trakingRepository.findByBookingId(booking.getId());
 
-        CustomerProfile senderProfile = customerReopository.findByUserId(senderDetails.getId())
-                .orElseThrow(() -> new ResourceNotFound("User"));
+                CustomerProfile senderProfile = customerReopository.findByUserId(senderDetails.getId())
+                                .orElseThrow(() -> new ResourceNotFound("User"));
 
-        TrakingSenderDeatilsResponseDto senderDetailsResponse = new TrakingSenderDeatilsResponseDto(
-                senderDetails.getName(),
-                senderProfile.getMobileCountryCode(),
-                senderProfile.getMobileNumber(),
-                senderDetails.getEmail(),
-                senderProfile.getHouseNo(),
-                senderProfile.getAddressLine1(),
-                senderProfile.getAddressLine2(),
-                senderProfile.getLandmark(),
-                senderProfile.getCity(),
-                senderProfile.getState(),
-                senderProfile.getPinCode(),
-                senderProfile.getCountry());
+                TrakingSenderDeatilsResponseDto senderDetailsResponse = new TrakingSenderDeatilsResponseDto(
+                                senderDetails.getName(),
+                                senderProfile.getMobileCountryCode(),
+                                senderProfile.getMobileNumber(),
+                                senderDetails.getEmail(),
+                                senderProfile.getHouseNo(),
+                                senderProfile.getAddressLine1(),
+                                senderProfile.getAddressLine2(),
+                                senderProfile.getLandmark(),
+                                senderProfile.getCity(),
+                                senderProfile.getState(),
+                                senderProfile.getPinCode(),
+                                senderProfile.getCountry());
 
-        TrakingRecieverDetailsResponseDto recieverDetailsResponse = new TrakingRecieverDetailsResponseDto(
-                receiverDetails.getName(),
-                receiverDetails.getMobileCountryCode(),
-                receiverDetails.getMobileNumber(),
-                receiverDetails.getAlternateMobileCountryCode(),
-                receiverDetails.getAlternateNumber(),
-                receiverDetails.getEmail(),
-                receiverDetails.getHouseNo(),
-                receiverDetails.getAddressLine1(),
-                receiverDetails.getAddressLine2(),
-                receiverDetails.getLandmark(),
-                receiverDetails.getCity(),
-                receiverDetails.getState(),
-                receiverDetails.getPinCode(),
-                receiverDetails.getCountry());
+                TrakingRecieverDetailsResponseDto recieverDetailsResponse = new TrakingRecieverDetailsResponseDto(
+                                receiverDetails.getName(),
+                                receiverDetails.getMobileCountryCode(),
+                                receiverDetails.getMobileNumber(),
+                                receiverDetails.getAlternateMobileCountryCode(),
+                                receiverDetails.getAlternateNumber(),
+                                receiverDetails.getEmail(),
+                                receiverDetails.getHouseNo(),
+                                receiverDetails.getAddressLine1(),
+                                receiverDetails.getAddressLine2(),
+                                receiverDetails.getLandmark(),
+                                receiverDetails.getCity(),
+                                receiverDetails.getState(),
+                                receiverDetails.getPinCode(),
+                                receiverDetails.getCountry());
 
-        TrakingParcelDetailsResponseDto parcelDetailsResponse = new TrakingParcelDetailsResponseDto(
-                booking.getTrakingId(),
-                booking.getBookingStatus(),
-                parcelDetails.getWeightInGrams(),
-                booking.getPackagingType(),
-                booking.getDeliveryType());
+                TrakingParcelDetailsResponseDto parcelDetailsResponse = new TrakingParcelDetailsResponseDto(
+                                booking.getTrakingId(),
+                                booking.getBookingStatus(),
+                                parcelDetails.getWeightInGrams(),
+                                booking.getPackagingType(),
+                                booking.getDeliveryType());
 
-        TrakingPaymentDetailsResponseDto paymentResponse = new TrakingPaymentDetailsResponseDto(
-                booking.getTrakingId(),
-                paymentDetails.getPaymentStatus(),
-                paymentDetails.getPaymentMethod(),
-                paymentDetails.getCardHolderName(),
-                paymentDetails.getCardBrand(),
-                paymentDetails.getCardBrand(),
-                parcelDetails.getBaseRate(),
-                parcelDetails.getPackagingRate(),
-                parcelDetails.getAdminFee(),
-                parcelDetails.getWeightCharge(),
-                parcelDetails.getDeliveryCharge(),
-                parcelDetails.getTaxAmount(),
-                parcelDetails.getTotalCost());
+                TrakingPaymentDetailsResponseDto paymentResponse;
+                if (paymentDetails != null) {
+                        paymentResponse = new TrakingPaymentDetailsResponseDto(
+                                        booking.getTrakingId(),
+                                        paymentDetails.getPaymentStatus(),
+                                        paymentDetails.getPaymentMethod(),
+                                        paymentDetails.getCardHolderName(),
+                                        null, // CVV should not be exposed or stored usually
+                                        paymentDetails.getCardBrand(),
+                                        parcelDetails.getBaseRate(),
+                                        parcelDetails.getPackagingRate(),
+                                        parcelDetails.getAdminFee(),
+                                        parcelDetails.getWeightCharge(),
+                                        parcelDetails.getDeliveryCharge(),
+                                        parcelDetails.getTaxAmount(),
+                                        parcelDetails.getTotalCost());
+                } else {
+                        paymentResponse = new TrakingPaymentDetailsResponseDto(
+                                        booking.getTrakingId(),
+                                        com.parcel_management_system.app.enums.EPaymentStatus.PENDING, // Default status
+                                        null, // Method
+                                        null, // Holder
+                                        null, // CVV
+                                        null, // Brand
+                                        parcelDetails.getBaseRate(),
+                                        parcelDetails.getPackagingRate(),
+                                        parcelDetails.getAdminFee(),
+                                        parcelDetails.getWeightCharge(),
+                                        parcelDetails.getDeliveryCharge(),
+                                        parcelDetails.getTaxAmount(),
+                                        parcelDetails.getTotalCost());
+                }
 
-        List<TrakingHistoryDetailsResponseDto> trakingHistoryResponse = new ArrayList<>();
-        for (Traking track : trakingHistory) {
-            EBookingStatus bookingStatus = track.getBookingStatus();
-            LocalDate date = track.getCreatedAt().toLocalDate();
-            String locationCity = track.getLocation();
-            String description = track.getDescription();
+                List<TrakingHistoryDetailsResponseDto> trakingHistoryResponse = new ArrayList<>();
+                for (Traking track : trakingHistory) {
+                        EBookingStatus bookingStatus = track.getBookingStatus();
+                        LocalDate date = track.getCreatedAt().toLocalDate();
+                        String locationCity = track.getLocation();
+                        String description = track.getDescription();
 
-            TrakingHistoryDetailsResponseDto currentHistory = new TrakingHistoryDetailsResponseDto(bookingStatus, date,
-                    locationCity, description);
+                        TrakingHistoryDetailsResponseDto currentHistory = new TrakingHistoryDetailsResponseDto(
+                                        bookingStatus, date,
+                                        locationCity, description);
 
-            trakingHistoryResponse.add(currentHistory);
+                        trakingHistoryResponse.add(currentHistory);
+                }
+
+                TrakingDetailsResponseDto response = new TrakingDetailsResponseDto(senderDetailsResponse,
+                                recieverDetailsResponse, parcelDetailsResponse, paymentResponse,
+                                trakingHistoryResponse);
+
+                return response;
         }
-
-        TrakingDetailsResponseDto response = new TrakingDetailsResponseDto(senderDetailsResponse,
-                recieverDetailsResponse, parcelDetailsResponse, paymentResponse,
-                trakingHistoryResponse);
-
-        return response;
-    }
 
 }

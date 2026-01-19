@@ -13,7 +13,7 @@ import lombok.Data;
 @Data
 public class ParcelPaymentRequestDto {
     @NotNull(message = "Booking ID is required")
-    private Long bookingId;
+    private String bookingId;
 
     @NotNull(message = "Payment method is required")
     private EPaymentMethod paymentMethod;

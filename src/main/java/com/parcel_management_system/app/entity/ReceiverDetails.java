@@ -48,7 +48,7 @@ public class ReceiverDetails extends BaseEntity {
     @Column
     private String addressLine2;
 
-    @Column(nullable = false)
+    @Column
     private String landmark;
 
     @Column(nullable = false)

@@ -37,10 +37,12 @@ public class BookingController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/create/customer")
-    public ResponseEntity<String> createBooking(@Valid @RequestBody BookingParcelRequestDto dto) {
-        bookingService.createNewBookingByCustomer(dto);
+    public ResponseEntity<com.parcel_management_system.app.dto.response.BookingResponseDto> createBooking(
+            @Valid @RequestBody BookingParcelRequestDto dto) {
+        com.parcel_management_system.app.dto.response.BookingResponseDto response = bookingService
+                .createNewBookingByCustomer(dto);
 
-        return ResponseEntity.ok("Booking created successfully");
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/history/officer")
