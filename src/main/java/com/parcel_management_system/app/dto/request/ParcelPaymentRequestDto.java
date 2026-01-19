@@ -1,5 +1,7 @@
 package com.parcel_management_system.app.dto.request;
 
+import java.time.LocalDate;
+
 import com.parcel_management_system.app.enums.EPaymentMethod;
 
 import jakarta.validation.constraints.NotBlank;
@@ -27,4 +29,7 @@ public class ParcelPaymentRequestDto {
     @NotBlank(message = "Card holder name is required")
     @Size(min = 3, max = 50, message = "Card holder name must be between 3 and 50 characters")
     private String cardHolderName;
+
+    @NotNull(message = "Expiry date is required")
+    private LocalDate expirtDate;
 }

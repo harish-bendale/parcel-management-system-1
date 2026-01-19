@@ -1,5 +1,6 @@
 package com.parcel_management_system.app.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.parcel_management_system.app.enums.EPaymentMethod;
@@ -40,6 +41,9 @@ public class Payment extends BaseEntity {
     private String last4digits;
 
     @Column(nullable = false)
+    private LocalDate expiryDate;
+
+    @Column(nullable = false)
     private String cardBrand;
 
     @Column(nullable = false)
@@ -47,7 +51,7 @@ public class Payment extends BaseEntity {
 
     @Column(nullable = false)
     private Boolean isRefund;
-    
+
     @Column
     private Double refundAmount;
 
