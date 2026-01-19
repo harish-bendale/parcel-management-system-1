@@ -35,6 +35,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query("""
             SELECT b FROM Booking b
             WHERE (:bookingStatus IS NULL OR b.bookingStatus = :bookingStatus)
+                AND (:customerId IS NULL OR b.user.id = :customerId)
                 AND (:bookingKeyword IS NULL OR LOWER (b.trakingId) LIKE (CONCAT('%', :bookingKeyword, '%')))
                 AND (:startDate IS NULL OR b.createdAt >= :startDate)
                 AND (:endDate IS NULL OR b.createdAt <= :endDate)
@@ -42,6 +43,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     Page<Booking> searchBookingCustomer(
             @Param("bookingStatus") EBookingStatus bookingStatus,
             @Param("bookingKeyword") String bookingKeyword,
+            @Param("customerId") Long customerId,
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate,
             Pageable pageable);

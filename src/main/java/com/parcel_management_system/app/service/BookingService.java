@@ -142,7 +142,7 @@ public class BookingService {
                 booking.getBookingStatus()));
     }
 
-    public Page<BookingHistoryCustomerResponseDto> getBookingHistoryForCustomer(BookingHistoryCustomerRequestDto dto) {
+    public Page<BookingHistoryCustomerResponseDto> getBookingHistoryForCustomer(BookingHistoryCustomerRequestDto dto, Long customerId) {
         Pageable pageable = PageRequest.of(dto.getPage(), dto.getSize(), Sort.by("createdAt").descending());
 
         LocalDateTime startDate = null;
@@ -156,6 +156,7 @@ public class BookingService {
         Page<Booking> bookings = bookingRepository.searchBookingCustomer(
                 dto.getBookingStatus(),
                 dto.getBookingKeyword(),
+                customerId,
                 startDate, endDate, pageable);
 
         return bookings.map(booking -> new BookingHistoryCustomerResponseDto(

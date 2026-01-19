@@ -102,7 +102,7 @@ public class AuthService {
             user.setLastLoginAt(LocalDateTime.now());
             userRepository.save(user);
 
-            String token = jwtUtil.generateToken(user.getUsername(), user.getRole().name(), user.getEmail());
+            String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getRole().name(), user.getEmail());
             return new AuthResponseDto(token, new UserDetailsResponseDto(
                     user.getId(),
                     user.getName(),

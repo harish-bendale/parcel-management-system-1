@@ -10,8 +10,10 @@ import com.parcel_management_system.app.dto.request.BookingParcelRequestDto;
 import com.parcel_management_system.app.dto.response.BookingHistoryCustomerResponseDto;
 import com.parcel_management_system.app.dto.response.BookingHistoryOfficerResponseDto;
 import com.parcel_management_system.app.enums.EBookingStatus;
+import com.parcel_management_system.app.security.JwtUtil;
 import com.parcel_management_system.app.service.BookingService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 import java.time.LocalDate;
@@ -29,11 +31,14 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-    @PostMapping("/create")
-    public ResponseEntity<Void> createBooking(@Valid @RequestBody BookingParcelRequestDto dto) {
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @PostMapping("/create/customer")
+    public ResponseEntity<String> createBooking(@Valid @RequestBody BookingParcelRequestDto dto) {
         bookingService.createNewBookingByCustomer(dto);
 
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok("Booking created successfully");
     }
 
     @GetMapping("/history/officer")
@@ -59,11 +64,19 @@ public class BookingController {
             @RequestParam(name = "bookingKeyword", required = false) String bookingKeyword,
             @RequestParam(name = "date", required = false) LocalDate date,
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
-            @RequestParam(name = "size", required = false, defaultValue = "10") int size) {
+            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
+            HttpServletRequest request) {
+
         BookingHistoryCustomerRequestDto dto = new BookingHistoryCustomerRequestDto(bookingStatus, bookingKeyword, date,
                 page, size);
 
-        Page<BookingHistoryCustomerResponseDto> response = bookingService.getBookingHistoryForCustomer(dto);
+        String token = jwtUtil.extractToken(request);
+        Long customerId = jwtUtil.extractId(token);
+
+        System.out.println("customerId" + customerId);
+        
+
+        Page<BookingHistoryCustomerResponseDto> response = bookingService.getBookingHistoryForCustomer(dto, customerId);
 
         return ResponseEntity.ok(response);
     }
