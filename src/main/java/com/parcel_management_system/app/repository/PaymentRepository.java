@@ -8,4 +8,6 @@ import com.parcel_management_system.app.entity.Payment;
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
+    boolean existsByTransactionId(String transactionId);
+
 }

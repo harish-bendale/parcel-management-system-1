@@ -23,9 +23,6 @@ import lombok.Setter;
 @Table(name = "payment")
 public class Payment extends BaseEntity {
     @Column(nullable = false, unique = true)
-    private String paymentCode;
-
-    @Column(nullable = false)
     private String transactionId;
 
     @Column(nullable = false)
@@ -50,7 +47,7 @@ public class Payment extends BaseEntity {
 
     @Column(nullable = false)
     private Boolean isRefund;
-
+    
     @Column
     private Double refundAmount;
 
