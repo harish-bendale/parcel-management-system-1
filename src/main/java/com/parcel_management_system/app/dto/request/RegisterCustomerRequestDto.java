@@ -34,7 +34,7 @@ public class RegisterCustomerRequestDto {
     @Pattern(regexp = "^\\+\\d{1,4}$", message = "Invalid country code")
     private String alternateMobileCountryCode;
 
-    @Pattern(regexp = "^[0-9]{10}$", message = "Alternate mobile number must be 10 digits")
+    @Pattern(regexp = "^$|^[0-9]{10}$", message = "Alternate mobile number must be 10 digits or empty")
     private String alternateMobileNumber;
 
     @NotBlank(message = "House number is required")
@@ -48,7 +48,6 @@ public class RegisterCustomerRequestDto {
     @Size(max = 255, message = "Address line 2 must not exceed 255 characters")
     private String addressLine2;
 
-    @NotBlank(message = "Landmark is required")
     @Size(max = 100, message = "Landmark must not exceed 100 characters")
     private String landmark;
 

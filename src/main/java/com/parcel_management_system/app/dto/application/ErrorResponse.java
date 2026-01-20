@@ -1,8 +1,8 @@
-package com.parcel_management_system.app.dto.response;
+package com.parcel_management_system.app.dto.application;
 
 import java.time.LocalDateTime;
 import java.util.Map;
-    
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
